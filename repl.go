@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func cleanInput(text string) []string {
+func CleanInput(text string) []string {
 
 	words := strings.Fields(text)
 
