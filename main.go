@@ -8,6 +8,12 @@ import (
 
 var commands map[string]cliCommand
 
+type config struct {
+	base string
+	next string
+	prev string
+}
+
 func main() {
 
 	// initialize commands map
