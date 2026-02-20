@@ -6,7 +6,24 @@ import (
 	"os"
 )
 
+var commands map[string]cliCommand
+
 func main() {
+
+	// initialize commands map
+	commands = map[string]cliCommand{
+		"exit": {
+			name:        "exit",
+			description: "Exit the pokedex",
+			callback:    commandExit,
+		},
+		"help": {
+			name:        "help",
+			description: "Print available commands",
+			callback:    commandHelp,
+		},
+	}
+
 	// initialize REPL loop
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -18,7 +35,16 @@ func main() {
 		scanner.Scan()
 		text := CleanInput(scanner.Text())
 		command := text[0]
-		fmt.Printf("Your command was: %s\n", command)
+
+		// Obtain function callback from commands map
+		function, ok := commands[command]
+
+		// if command exists in commands map, run function callback, else throw error message
+		if ok {
+			function.callback()
+		} else {
+			fmt.Println("Please enter valid command (\"Help\" is a valid command)")
+		}
 
 	}
 }
