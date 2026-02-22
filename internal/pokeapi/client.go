@@ -2,7 +2,7 @@ package pokeapi
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 )
 
@@ -30,6 +30,8 @@ func NewClient() *Client {
 
 func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 
+	var data LocationAreaResponse
+
 	// if no next or prev urls are stored in config, use base location-area url
 	if url == "" {
 		url = c.BaseURL + "/location-area"
@@ -40,16 +42,17 @@ func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 
 	// error check API call
 	if err != nil {
-		log.Fatal(err)
+		return LocationAreaResponse{}, err
 	}
 	if res.StatusCode > 299 {
-		log.Fatalf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, res.Body)
+		return LocationAreaResponse{}, fmt.Errorf("unexpected status: %d", res.StatusCode)
 	}
 	defer res.Body.Close()
 
 	// decode response data into LocationAreaResponse object
-	var data LocationAreaResponse
-	json.NewDecoder(res.Body).Decode(&data)
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return LocationAreaResponse{}, err
+	}
 
 	return data, nil
 }
