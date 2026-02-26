@@ -4,8 +4,6 @@ import (
 	"github.com/JaygnatBuilds/pokedexcli/internal/pokeapi"
 )
 
-var commands map[string]cliCommand
-
 type config struct {
 	next   string
 	prev   string

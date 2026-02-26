@@ -71,8 +71,6 @@ func commandMapb(cfg *config) error {
 	return nil
 }
 
-// TODO : Clear function that clears console
-
 func commandClear(cfg *config) error {
 
 	cmd := exec.Command("clear")
