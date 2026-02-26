@@ -23,7 +23,7 @@ func commandHelp(cfg *config) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Commands")
 	fmt.Println("--------")
-	for _, command := range commands {
+	for _, command := range getCommands() {
 		fmt.Printf("%s : %s\n", command.name, command.description)
 	}
 	fmt.Println("--------")

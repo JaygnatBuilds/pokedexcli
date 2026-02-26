@@ -30,13 +30,22 @@ func startRepl(cfg *config) {
 		command := text[0]
 
 		// Obtain function callback from commands map
-		function, ok := commands[command]
+		function, ok := getCommands()[command]
 
 		// if command exists in commands map, run function callback, else throw error message
 		if ok {
-			function.callback(cfg)
+
+			err := function.callback(cfg)
+			if err != nil {
+				fmt.Println(err)
+			}
+			continue
+
 		} else {
+
 			fmt.Println("Please enter valid command (\"Help\" is a valid command)")
+			continue
+
 		}
 
 	}
