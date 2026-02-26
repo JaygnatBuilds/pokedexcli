@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 )
 
 type cliCommand struct {
@@ -70,6 +71,17 @@ func commandMapb(cfg *config) error {
 	return nil
 }
 
+// TODO : Clear function that clears console
+
+func commandClear(cfg *config) error {
+
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+
+	return nil
+}
+
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"exit": {
@@ -92,7 +104,10 @@ func getCommands() map[string]cliCommand {
 			description: "display previous 20 map locations",
 			callback:    commandMapb,
 		},
+		"clear": {
+			name:        "clear",
+			description: "clear console screen",
+			callback:    commandClear,
+		},
 	}
 }
-
-// TODO : Clear function that clears console
