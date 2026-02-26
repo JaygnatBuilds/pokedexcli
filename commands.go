@@ -70,4 +70,29 @@ func commandMapb(cfg *config) error {
 	return nil
 }
 
+func getCommands() map[string]cliCommand {
+	return map[string]cliCommand{
+		"exit": {
+			name:        "exit",
+			description: "Exit the pokedex",
+			callback:    commandExit,
+		},
+		"help": {
+			name:        "help",
+			description: "Print available commands",
+			callback:    commandHelp,
+		},
+		"map": {
+			name:        "map",
+			description: "display next 20 map locations",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "display previous 20 map locations",
+			callback:    commandMapb,
+		},
+	}
+}
+
 // TODO : Clear function that clears console
