@@ -3,12 +3,17 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"time"
+
+	"github.com/JaygnatBuilds/pokedexcli/internal/pokecache"
 )
 
 type Client struct {
 	BaseURL    string
 	httpClient *http.Client
+	cache      *pokecache.Cache
 }
 
 type LocationAreaResponse struct {
@@ -22,19 +27,31 @@ type LocationAreaResponse struct {
 }
 
 func NewClient() *Client {
+
 	return &Client{
 		BaseURL:    "https://pokeapi.co/api/v2",
 		httpClient: &http.Client{},
+		cache:      pokecache.NewCache(5 * time.Second),
 	}
 }
 
 func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 
-	var data LocationAreaResponse
-
 	// if no next or prev urls are stored in config, use base location-area url
 	if url == "" {
 		url = c.BaseURL + "/location-area"
+	}
+
+	// Check if api call response value is already in cache
+	if value, ok := c.cache.Get(url); ok {
+
+		locationsResp := LocationAreaResponse{}
+		err := json.Unmarshal(value, &locationsResp)
+		if err != nil {
+			return LocationAreaResponse{}, err
+		}
+
+		return locationsResp, nil
 	}
 
 	// make get API call
@@ -49,10 +66,19 @@ func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 	}
 	defer res.Body.Close()
 
-	// decode response data into LocationAreaResponse object
-	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+	// read response body into byte[] data
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
 		return LocationAreaResponse{}, err
 	}
 
-	return data, nil
+	locationsResp := LocationAreaResponse{}
+	err = json.Unmarshal(data, &locationsResp)
+	if err != nil {
+		return LocationAreaResponse{}, err
+	}
+
+	c.cache.Add(url, data)
+	return locationsResp, nil
+
 }
