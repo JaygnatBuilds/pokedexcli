@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/JaygnatBuilds/pokedexcli/internal/pokeapi"
 )
 
@@ -14,7 +16,7 @@ func main() {
 
 	// initialize config client
 	cfg := &config{
-		client: pokeapi.NewClient(),
+		client: pokeapi.NewClient(5*time.Second, 5*time.Minute),
 	}
 
 	startRepl(cfg)

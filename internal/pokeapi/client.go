@@ -23,11 +23,13 @@ type LocationAreaResponse struct {
 	} `json:"results"`
 }
 
-func NewClient() *Client {
+func NewClient(timeout, cacheInterval time.Duration) *Client {
 
 	return &Client{
-		BaseURL:    "https://pokeapi.co/api/v2",
-		httpClient: &http.Client{},
-		cache:      pokecache.NewCache(5 * time.Minute),
+		BaseURL: "https://pokeapi.co/api/v2",
+		httpClient: &http.Client{
+			Timeout: timeout,
+		},
+		cache: pokecache.NewCache(cacheInterval),
 	}
 }
