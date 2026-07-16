@@ -35,6 +35,7 @@ func startRepl(cfg *config) {
 		}
 		text := CleanInput(scanner.Text())
 		command := text[0]
+		parameter := text[1]
 
 		// Obtain function callback from commands map
 		function, ok := getCommands()[command]
@@ -42,7 +43,7 @@ func startRepl(cfg *config) {
 		// if command exists in commands map, run function callback, else throw error message
 		if ok {
 
-			err := function.callback(cfg)
+			err := function.callback(cfg, parameter)
 			if err != nil {
 				fmt.Println(err)
 			}

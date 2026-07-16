@@ -47,6 +47,7 @@ func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 		return LocationAreaResponse{}, err
 	}
 
+	// convert byte[] data to LocationAreaResponse object
 	locationsResp := LocationAreaResponse{}
 	err = json.Unmarshal(data, &locationsResp)
 	if err != nil {
@@ -83,8 +84,32 @@ func (c *Client) ListPokemonEncounters(area string) (PokemonEncounterResponse, e
 	// GET API call
 	res, err := c.httpClient.Get(url)
 
+	// error check API call
 	if err != nil {
-
+		return PokemonEncounterResponse{}, err
 	}
+	if res.StatusCode > 299 {
+		return PokemonEncounterResponse{}, fmt.Errorf("unexpected status: %d", res.StatusCode)
+	}
+	defer res.Body.Close()
+
+	// read response body into byte[] data
+	data, err := io.ReadAll(res.Body)
+
+	if err != nil {
+		return PokemonEncounterResponse{}, err
+	}
+
+	// convert byte[] data to PokemonEncounterResponse object
+	pokemonResponse := PokemonEncounterResponse{}
+	err = json.Unmarshal(data, &pokemonResponse)
+
+	if err != nil {
+		return PokemonEncounterResponse{}, err
+	}
+
+	// add result to cache and return result
+	c.cache.Add(url, data)
+	return pokemonResponse, nil
 
 }

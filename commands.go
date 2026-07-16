@@ -9,17 +9,29 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, string) error
 }
 
-func commandExit(cfg *config) error {
+func commandExit(cfg *config, param string) error {
+
+	// Parameter check
+	if param != "" {
+		fmt.Println("exit command accepts no parameter")
+		return nil
+	}
 
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(cfg *config) error {
+func commandHelp(cfg *config, param string) error {
+
+	// Parameter check
+	if param != "" {
+		fmt.Println("help command accepts no parameter")
+		return nil
+	}
 
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Commands")
@@ -31,7 +43,13 @@ func commandHelp(cfg *config) error {
 	return nil
 }
 
-func commandMap(cfg *config) error {
+func commandMap(cfg *config, param string) error {
+
+	// Parameter check
+	if param != "" {
+		fmt.Println("map command accepts no parameter")
+		return nil
+	}
 
 	data, err := cfg.client.ListLocationAreas(cfg.next)
 	if err != nil {
@@ -49,7 +67,13 @@ func commandMap(cfg *config) error {
 
 }
 
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, param string) error {
+
+	// Parameter check
+	if param != "" {
+		fmt.Println("mapb command accepts no parameter")
+		return nil
+	}
 
 	if cfg.prev == "" {
 		fmt.Println("You're on the first page")
@@ -71,7 +95,13 @@ func commandMapb(cfg *config) error {
 	return nil
 }
 
-func commandClear(cfg *config) error {
+func commandClear(cfg *config, param string) error {
+
+	// Parameter check
+	if param != "" {
+		fmt.Println("clear command accepts no parameter")
+		return nil
+	}
 
 	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
@@ -88,8 +118,8 @@ func commandExplore(cfg *config, area string) error {
 		return err
 	}
 
-	for _, result := range data.Results {
-		fmt.Println(result.name)
+	for _, result := range data.PokemonEncounters {
+		fmt.Println(result.Pokemon.Name)
 	}
 
 	return nil

@@ -24,6 +24,12 @@ type LocationAreaResponse struct {
 }
 
 type PokemonEncounterResponse struct {
+	PokemonEncounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"pokemon"`
+	} `json:"pokemon_encounters"`
 }
 
 func NewClient(timeout, cacheInterval time.Duration) *Client {
