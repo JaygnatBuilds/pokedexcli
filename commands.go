@@ -80,6 +80,21 @@ func commandClear(cfg *config) error {
 	return nil
 }
 
+func commandExplore(cfg *config, area string) error {
+
+	data, err := cfg.client.ListPokemonEncounters(area)
+
+	if err != nil {
+		return err
+	}
+
+	for _, result := range data.Results {
+		fmt.Println(result.name)
+	}
+
+	return nil
+}
+
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"exit": {
@@ -106,6 +121,11 @@ func getCommands() map[string]cliCommand {
 			name:        "clear",
 			description: "clear console screen",
 			callback:    commandClear,
+		},
+		"explore": {
+			name:        "explore",
+			description: "list all pokemon in area",
+			callback:    commandExplore,
 		},
 	}
 }

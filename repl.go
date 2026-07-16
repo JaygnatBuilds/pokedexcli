@@ -26,6 +26,13 @@ func startRepl(cfg *config) {
 
 		// Scan for commands and capture first string in input
 		scanner.Scan()
+
+		// Error check for scan function
+		if err := scanner.Err(); err != nil {
+			fmt.Printf("Error encountered during scan function: %v\n", err)
+			os.Exit(0)
+			return
+		}
 		text := CleanInput(scanner.Text())
 		command := text[0]
 

@@ -1,3 +1,7 @@
+// Functions related to the location-areas pokeAPI endpoint
+// ListLocationAreas : returns a list of location areas
+// ListPokemonEncounters : returns a list of pokemon a location-area has
+
 package pokeapi
 
 import (
@@ -25,7 +29,7 @@ func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 		return locationsResp, nil
 	}
 
-	// make get API call
+	// GET API call
 	res, err := c.httpClient.Get(url)
 
 	// error check API call
@@ -52,5 +56,35 @@ func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 	// add result to cache and return result
 	c.cache.Add(url, data)
 	return locationsResp, nil
+
+}
+
+func (c *Client) ListPokemonEncounters(area string) (PokemonEncounterResponse, error) {
+
+	// return error if no location parameter is provided
+	if area == "" {
+		return PokemonEncounterResponse{}, fmt.Errorf("location parameter blank. Please provide location name or ID.")
+	}
+
+	url := c.BaseURL + "/location-areas/" + area
+
+	// Check if api call response value is already in cache
+	if value, ok := c.cache.Get(url); ok {
+
+		pokemonResponse := PokemonEncounterResponse{}
+		err := json.Unmarshal(value, &pokemonResponse)
+		if err != nil {
+			return PokemonEncounterResponse{}, err
+		}
+
+		return pokemonResponse, nil
+	}
+
+	// GET API call
+	res, err := c.httpClient.Get(url)
+
+	if err != nil {
+
+	}
 
 }

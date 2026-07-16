@@ -23,6 +23,9 @@ type LocationAreaResponse struct {
 	} `json:"results"`
 }
 
+type PokemonEncounterResponse struct {
+}
+
 func NewClient(timeout, cacheInterval time.Duration) *Client {
 
 	return &Client{
