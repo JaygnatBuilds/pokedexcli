@@ -67,7 +67,7 @@ func (c *Client) ListPokemonEncounters(area string) (PokemonEncounterResponse, e
 		return PokemonEncounterResponse{}, fmt.Errorf("location parameter blank. Please provide location name or ID.")
 	}
 
-	url := c.BaseURL + "/location-areas/" + area
+	url := c.BaseURL + "/location-area/" + area
 
 	// Check if api call response value is already in cache
 	if value, ok := c.cache.Get(url); ok {

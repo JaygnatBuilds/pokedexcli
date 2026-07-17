@@ -118,6 +118,8 @@ func commandExplore(cfg *config, area string) error {
 		return err
 	}
 
+	fmt.Printf("Listing pokemon in %v...\n", data.Location.Name)
+
 	for _, result := range data.PokemonEncounters {
 		fmt.Println(result.Pokemon.Name)
 	}

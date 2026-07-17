@@ -24,6 +24,10 @@ type LocationAreaResponse struct {
 }
 
 type PokemonEncounterResponse struct {
+	ID       int `json:"id"`
+	Location struct {
+		Name string `json:"name"`
+	} `json:"location"`
 	PokemonEncounters []struct {
 		Pokemon struct {
 			Name string `json:"name"`

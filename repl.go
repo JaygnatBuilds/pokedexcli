@@ -35,7 +35,12 @@ func startRepl(cfg *config) {
 		}
 		text := CleanInput(scanner.Text())
 		command := text[0]
-		parameter := text[1]
+
+		// account for parameter
+		parameter := ""
+		if len(text) > 1 {
+			parameter = text[1]
+		}
 
 		// Obtain function callback from commands map
 		function, ok := getCommands()[command]
