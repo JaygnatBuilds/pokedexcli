@@ -1,3 +1,4 @@
+// main program driver file. Initializes REPL and program config object
 package main
 
 import (

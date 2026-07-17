@@ -1,3 +1,6 @@
+// REPL driver file containing REPL functions
+// CleanInput : sanitize input to REPL
+// startRepl : initialize and start REPL
 package main
 
 import (

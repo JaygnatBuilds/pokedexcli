@@ -10,6 +10,7 @@ import (
 	"io"
 )
 
+// ListLocationAreas : makes pokeAPI call to return list of locations in pokemon
 func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 
 	// if no next or prev urls are stored in config, use base location-area url
@@ -60,6 +61,7 @@ func (c *Client) ListLocationAreas(url string) (LocationAreaResponse, error) {
 
 }
 
+// ListPokemonEncounters : makes pokeAPI call to return list of pokemon in location
 func (c *Client) ListPokemonEncounters(area string) (PokemonEncounterResponse, error) {
 
 	// return error if no location parameter is provided

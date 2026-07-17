@@ -22,6 +22,7 @@ import (
 type cliCommand struct {
 	name        string
 	description string
+	usage       string
 	callback    func(*config, string) error
 }
 
@@ -72,7 +73,7 @@ func commandHelp(cfg *config, param string) error {
 	fmt.Println("Commands")
 	fmt.Println("--------")
 	for _, command := range getCommands() {
-		fmt.Printf("%s : %s\n", command.name, command.description)
+		fmt.Printf("%s : %s\n\t- %s\n", command.name, command.description, command.usage)
 	}
 	fmt.Println("--------")
 	return nil
@@ -254,6 +255,11 @@ func commandInspectPokedex(cfg *config, param string) error {
 		return nil
 	}
 
+	fmt.Println("Your Pokedex:")
+	for _, s := range pokedex {
+		fmt.Printf("- %s\n", s.Name)
+	}
+
 	return nil
 }
 
@@ -262,46 +268,55 @@ func getCommands() map[string]cliCommand {
 		"exit": {
 			name:        "exit",
 			description: "Exit the pokedex",
+			usage:       "Type 'exit'",
 			callback:    commandExit,
 		},
 		"help": {
 			name:        "help",
 			description: "Print available commands",
+			usage:       "Type 'help'",
 			callback:    commandHelp,
 		},
 		"map": {
 			name:        "map",
 			description: "display next 20 map locations",
+			usage:       "Type 'map'",
 			callback:    commandMap,
 		},
 		"mapb": {
 			name:        "mapb",
 			description: "display previous 20 map locations",
+			usage:       "Type 'mapb'",
 			callback:    commandMapb,
 		},
 		"clear": {
 			name:        "clear",
 			description: "clear console screen",
+			usage:       "Type 'clear'",
 			callback:    commandClear,
 		},
 		"explore": {
 			name:        "explore",
 			description: "list all pokemon in area",
+			usage:       "Type 'explore {area name or ID}'",
 			callback:    commandExplore,
 		},
 		"catch": {
 			name:        "catch",
 			description: "attempt to catch a pokemon",
+			usage:       "Type 'catch {pokemon name or ID}'",
 			callback:    commandCatchPokemon,
 		},
 		"inspect": {
 			name:        "inspect",
 			description: "inspect a pokemons attributes",
+			usage:       "Type 'inspect {pokemon name}'",
 			callback:    commandInspectPokemon,
 		},
 		"pokedex": {
 			name:        "pokedex",
 			description: "list pokemon in pokedex",
+			usage:       "Type 'pokedex'",
 			callback:    commandInspectPokedex,
 		},
 	}

@@ -1,5 +1,6 @@
 // Functions related to the pokemon pokeAPI endpoint
-// ListLocationAreas : returns a list of location areas
+// CatchPokemon : returns the information for a pokemon and passes API data back to function
+//                that simulates catching it
 
 package pokeapi
 
@@ -9,6 +10,7 @@ import (
 	"io"
 )
 
+// CatchPokemon : makes pokeAPI call to return info about pokemon
 func (c *Client) CatchPokemon(name string) (PokemonInfoResponse, error) {
 
 	if name == "" {

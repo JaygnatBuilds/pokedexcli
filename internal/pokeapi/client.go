@@ -1,3 +1,6 @@
+// PokeAPI client driver file
+// API client struct as well as JSON response structs
+// NewClient : function to initialize a new pokeAPI client
 package pokeapi
 
 import (
@@ -55,6 +58,7 @@ type PokemonInfoResponse struct {
 	} `json:"types"`
 }
 
+// NewClient : initialize new API client
 func NewClient(timeout, cacheInterval time.Duration) *Client {
 
 	return &Client{
