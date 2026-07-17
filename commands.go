@@ -148,7 +148,7 @@ func commandCatchPokemon(cfg *config, name string) error {
 		fmt.Printf("%v is already in your pokedex.\n", data.Name)
 		return nil
 	} else {
-		fmt.Printf("Throwing Pokeball at %v...\n", data.Name)
+		fmt.Printf("Throwing a Pokeball at %v...\n", data.Name)
 		fmt.Printf("%v base experience is %v\n", data.Name, data.Base_Exp)
 
 		exp_normalize := data.Base_Exp / 10
