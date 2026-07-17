@@ -36,6 +36,11 @@ type PokemonEncounterResponse struct {
 	} `json:"pokemon_encounters"`
 }
 
+type PokemonInfoResponse struct {
+	Name     string `json:"name"`
+	Base_Exp int    `json:"base_experience"`
+}
+
 func NewClient(timeout, cacheInterval time.Duration) *Client {
 
 	return &Client{

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"os/exec"
 )
@@ -11,6 +12,13 @@ type cliCommand struct {
 	description string
 	callback    func(*config, string) error
 }
+
+type Pokemon struct {
+	name     string
+	base_exp int
+}
+
+var pokedex = map[string]Pokemon{}
 
 func commandExit(cfg *config, param string) error {
 
@@ -127,6 +135,41 @@ func commandExplore(cfg *config, area string) error {
 	return nil
 }
 
+func commandCatchPokemon(cfg *config, name string) error {
+
+	data, err := cfg.client.CatchPokemon(name)
+
+	if err != nil {
+		return err
+	}
+
+	// check if pokemon is already in pokedex
+	if _, ok := pokedex[data.Name]; ok {
+		fmt.Printf("%v is already in your pokedex.\n", data.Name)
+		return nil
+	} else {
+		fmt.Printf("Throwing Pokeball at %v...\n", data.Name)
+		fmt.Printf("%v base experience is %v\n", data.Name, data.Base_Exp)
+
+		exp_normalize := data.Base_Exp / 10
+		odds_final := 100 - exp_normalize
+
+		fmt.Printf("exp_normalization: %d\n", exp_normalize)
+		fmt.Printf("final odds: %d\n", odds_final)
+
+		catch_roll := rand.Intn(100)
+		fmt.Printf("catch roll : %d\n", catch_roll)
+		if catch_roll <= odds_final {
+			fmt.Println("Caught!")
+			pokedex[data.Name] = Pokemon{data.Name, data.Base_Exp}
+		} else {
+			fmt.Println("Miss!")
+		}
+	}
+
+	return nil
+}
+
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"exit": {
@@ -158,6 +201,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "list all pokemon in area",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "attempt to catch a pokemon",
+			callback:    commandCatchPokemon,
 		},
 	}
 }
